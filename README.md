@@ -5,18 +5,6 @@
 ## Архітектура рішення
 
 Усі сервіси працюють в ізольованій bridge-мережі `smarthome_net` та взаємодіють за внутрішніми DNS-іменами контейнерів. Порти бази даних та MQTT-брокера прив'язані виключно до `127.0.0.1` для мінімізації поверхні атаки.
-
-```mermaid
-graph TD
-    User([Користувач / Браузер]) -->|HTTP :8081| OpenHAB[OpenHAB 4.2]
-    User -->|HTTP :3000| Grafana[Grafana 11.2]
-    IoT([IoT Пристрої]) -->|MQTT :1884| Mosquitto[Eclipse Mosquitto]
-    
-    subgraph smarthome_net [Isolated Docker Network: smarthome_net]
-        OpenHAB <-->|Pub/Sub DNS: mosquitto| Mosquitto
-        OpenHAB -->|Time-Series Write DNS: influxdb:8086| InfluxDB[(InfluxDB 2.7)]
-        Grafana -->|Flux Queries DNS: influxdb:8086| InfluxDB
-    end
 Quick Start GuideКлонування репозиторію:Bashgit clone <URL_твого_репозиторію>
 cd openhab-deployment
 Налаштування змінних середовища:Bashcp docker/.env.example docker/.env
